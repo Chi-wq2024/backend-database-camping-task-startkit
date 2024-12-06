@@ -132,7 +132,7 @@ INSERT INTO "COACH_LINK_SKILL"(coach_id, skill_id) VALUES
     -- 2. 教練`Q太郎` 的經驗年數為5年
 UPDATE "COACH"
 SET experience_years = 3
-WHERE user_id = (SELECT id FROM "USER" WHERE email = 'muscle@hexschooltest.io')
+WHERE user_id = (SELECT id FROM "USER" WHERE email = 'muscle@hexschooltest.io');
 
 UPDATE "COACH"
 SET experience_years = 5

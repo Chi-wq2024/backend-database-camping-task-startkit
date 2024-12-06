@@ -197,7 +197,7 @@ VALUES(
 (SELECT id FROM "COURSE" WHERE user_id = (SELECT id FROM "USER" WHERE email = 'lee2000@hexschooltest.io')),
 '2024-11-24 16:00:00',
 '即將授課'),
-(SELECT id FROM "USER" WHERE email = 'richman@hexschooltest.io'),
+((SELECT id FROM "USER" WHERE email = 'richman@hexschooltest.io'),
 (SELECT id FROM "COURSE" WHERE user_id = (SELECT id FROM "USER" WHERE email = 'lee2000@hexschooltest.io')),
 '2024-11-24 16:00:00',
 '即將授課');
@@ -238,7 +238,7 @@ AND status = '即將授課';
 -- 5-6. 查詢：計算用戶王小明的購買堂數，顯示須包含以下欄位： user_id , total。 (需使用到 SUM 函式與 Group By)
 SELECT 
 	"CREDIT_PURCHASE".user_id,
-  SUM(purchased_credits) AS total
+    SUM(purchased_credits) AS "total"
 FROM "CREDIT_PURCHASE"
 WHERE "CREDIT_PURCHASE".user_id = (SELECT id FROM "USER" WHERE email = 'wXlTq@hexschooltest.io')
 GROUP BY "CREDIT_PURCHASE".user_id;
@@ -246,7 +246,7 @@ GROUP BY "CREDIT_PURCHASE".user_id;
 -- 5-7. 查詢：計算用戶王小明的已使用堂數，顯示須包含以下欄位： user_id , total。 (需使用到 Count 函式與 Group By)
 SELECT 
 	"COURSE_BOOKING".user_id,
-  COUNT(*) AS total
+    COUNT(*) AS "total"
 FROM "COURSE_BOOKING"
 WHERE "COURSE_BOOKING".user_id = (SELECT id FROM "USER" WHERE email = 'wXlTq@hexschooltest.io')
 AND status != '課程已取消'
@@ -284,7 +284,7 @@ ORDER BY "COACH".experience_years DESC;
 -- 顯示須包含以下欄位： 專長名稱, coach_total
 SELECT 
   "SKILL".name AS "專長名稱",
-  COUNT(*) AS coach_total
+  COUNT(*) AS "coach_total"
 FROM "COACH_LINK_SKILL"
 INNER JOIN "SKILL" ON "SKILL".id = "COACH_LINK_SKILL".skill_id
 GROUP BY "SKILL".name
@@ -293,25 +293,25 @@ LIMIT 1;
 
 -- 6-3. 查詢：計算 11 月份組合包方案的銷售數量
 -- 顯示須包含以下欄位： 組合包方案名稱, 銷售數量
-select 
-  "CREDIT_PACKAGE".name as "組合包方案名稱",
-  count(*) as "銷售數量"
-from "CREDIT_PURCHASE"
-inner join "CREDIT_PACKAGE" on "CREDIT_PACKAGE".id = "CREDIT_PURCHASE".credit_package_id
-where "CREDIT_PURCHASE".created_at >= '2024-12-01 00:00:00' and "CREDIT_PURCHASE".created_at <= '2024-12-31 23:59:59'
-group by "CREDIT_PACKAGE".name;
+SELECT 
+  "CREDIT_PACKAGE".name AS "組合包方案名稱",
+  count(*) AS "銷售數量"
+FROM "CREDIT_PURCHASE"
+INNER JOIN "CREDIT_PACKAGE" ON "CREDIT_PACKAGE".id = "CREDIT_PURCHASE".credit_package_id
+WHERE "CREDIT_PURCHASE".created_at >= '2024-12-01 00:00:00' AND "CREDIT_PURCHASE".created_at <= '2024-12-31 23:59:59'
+GROUP BY "CREDIT_PACKAGE".name;
 
 -- 6-4. 查詢：計算 11 月份總營收（使用 purchase_at 欄位統計）
 -- 顯示須包含以下欄位： 總營收
-select sum(price_paid) as "總營收"
-from "CREDIT_PURCHASE"
-where "CREDIT_PURCHASE".purchase_at >= '2024-12-01 00:00:00' 
-and "CREDIT_PURCHASE".purchase_at <= '2024-12-31 23:59:59';
+SELECT sum(price_paid) AS "總營收"
+FROM "CREDIT_PURCHASE"
+WHERE "CREDIT_PURCHASE".purchase_at >= '2024-12-01 00:00:00' 
+AND "CREDIT_PURCHASE".purchase_at <= '2024-12-31 23:59:59';
 
 -- 6-5. 查詢：計算 11 月份有預約課程的會員人數（需使用 Distinct，並用 created_at 和 status 欄位統計）
 -- 顯示須包含以下欄位： 預約會員人數
-select count(Distinct("COURSE_BOOKING".user_id)) as "預約會員人數"
-from "COURSE_BOOKING"
-where "COURSE_BOOKING".created_at >= '2024-12-01 00:00:00' 
-and "COURSE_BOOKING".created_at <= '2024-12-31 23:59:59' 
-and "COURSE_BOOKING".status != '課程已取消';
+SELECT count(Distinct("COURSE_BOOKING".user_id)) AS "預約會員人數"
+FROM "COURSE_BOOKING"
+WHERE "COURSE_BOOKING".created_at >= '2024-12-01 00:00:00' 
+AND "COURSE_BOOKING".created_at <= '2024-12-31 23:59:59' 
+AND "COURSE_BOOKING".status != '課程已取消';
